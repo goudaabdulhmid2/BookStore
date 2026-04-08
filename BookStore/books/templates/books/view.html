@@ -1,0 +1,135 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .book-view {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 28px;
+        align-items: start;
+    }
+
+    .book-panel,
+    .book-summary {
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+    }
+
+    .book-panel {
+        overflow: hidden;
+    }
+
+    .book-panel img {
+        width: 100%;
+        height: 100%;
+        max-height: 620px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .book-summary {
+        padding: 34px;
+    }
+
+    .eyebrow {
+        color: var(--accent-dark);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.82rem;
+    }
+
+    .book-summary h1 {
+        margin: 10px 0 14px;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1.08;
+    }
+
+    .lead {
+        margin: 0 0 24px;
+        color: var(--text-soft);
+        font-size: 1.08rem;
+        line-height: 1.8;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+        gap: 14px;
+        margin-bottom: 26px;
+    }
+
+    .stat {
+        padding: 18px;
+        border-radius: 20px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+    }
+
+    .stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.25rem;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .actions a {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    .back-link {
+        background: rgba(154, 52, 18, 0.08);
+        color: var(--accent-dark);
+    }
+
+    .browse-link {
+        background: var(--accent);
+        color: white;
+    }
+
+    @media (max-width: 760px) {
+        .book-view {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="book-view">
+    <div class="book-panel">
+        <img src="{% static 'books/images/' %}{{ book.image }}" alt="{{ book.title }}">
+    </div>
+    <article class="book-summary">
+        <span class="eyebrow">Book View</span>
+        <h1>{{ book.title }}</h1>
+        <p class="lead">{{ book.breif }}</p>
+        <div class="stats">
+            <div class="stat">
+                <span>Pages</span>
+                <strong>{{ book.noOfPages }}</strong>
+            </div>
+            <div class="stat">
+                <span>Price</span>
+                <strong>${{ book.price }}</strong>
+            </div>
+        </div>
+        <div class="actions">
+            <a class="back-link" href="/books/">Back to catalog</a>
+            <a class="browse-link" href="/books/index.html">Browse more books</a>
+        </div>
+    </article>
+</section>
+{% endblock %}

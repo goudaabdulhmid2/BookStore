@@ -1,0 +1,159 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}About BookStore{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 24px;
+        align-items: stretch;
+        margin-bottom: 30px;
+    }
+
+    .about-copy,
+    .about-panel,
+    .highlight-card,
+    .story-card {
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+    }
+
+    .about-copy,
+    .about-panel,
+    .story-card {
+        padding: 32px;
+    }
+
+    .eyebrow {
+        display: inline-block;
+        margin-bottom: 12px;
+        color: var(--accent-dark);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.82rem;
+    }
+
+    .about-copy h1 {
+        margin: 0 0 14px;
+        font-size: clamp(2.1rem, 4vw, 3.5rem);
+        line-height: 1.06;
+    }
+
+    .about-copy p,
+    .about-panel p,
+    .story-card p,
+    .highlight-card p {
+        margin: 0;
+        color: var(--text-soft);
+        line-height: 1.75;
+    }
+
+    .about-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+
+    .about-actions a {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    .button-primary {
+        background: var(--accent);
+        color: white;
+    }
+
+    .button-secondary {
+        background: rgba(154, 52, 18, 0.08);
+        color: var(--accent-dark);
+    }
+
+    .about-panel {
+        background: linear-gradient(180deg, #fffdf9 0%, #fff1df 100%);
+        display: grid;
+        gap: 14px;
+        align-content: center;
+    }
+
+    .about-panel strong {
+        font-size: 2.7rem;
+        color: var(--accent-dark);
+    }
+
+    .section-title {
+        margin: 0 0 18px;
+        font-size: 1.5rem;
+    }
+
+    .highlights-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+        margin-bottom: 28px;
+    }
+
+    .highlight-card {
+        padding: 24px;
+    }
+
+    .highlight-card h2 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+    }
+
+    .story-card {
+        background: rgba(255, 250, 243, 0.9);
+    }
+
+    @media (max-width: 760px) {
+        .about-hero {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="about-hero">
+    <div class="about-copy">
+        <span class="eyebrow">About Us</span>
+        <h1>We built BookStore to make discovering books feel warm, simple, and welcoming.</h1>
+        <p>Our goal is to create a calm place where readers can browse thoughtful titles, explore new voices, and enjoy a clean experience that keeps the focus on stories.</p>
+        <div class="about-actions">
+            <a class="button-primary" href="/books/">Visit the catalog</a>
+            <a class="button-secondary" href="/books/index.html">Browse featured books</a>
+        </div>
+    </div>
+    <aside class="about-panel">
+        <span>What guides us</span>
+        <strong>{{ highlights|length }}</strong>
+        <p>Core values shape how we choose books, design pages, and welcome readers into the collection.</p>
+    </aside>
+</section>
+
+<section>
+    <h2 class="section-title">Why Readers Choose Us</h2>
+    <div class="highlights-grid">
+        {% for item in highlights %}
+            <article class="highlight-card">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.text }}</p>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="story-card">
+    <span class="eyebrow">Our Story</span>
+    <h2 class="section-title">A bookstore experience inspired by curiosity and comfort.</h2>
+    <p>We believe a good bookstore should feel friendly from the first click. That is why our pages use the same cozy visual theme across the catalog and the about page, helping the whole site feel connected and easy to explore.</p>
+</section>
+{% endblock %}

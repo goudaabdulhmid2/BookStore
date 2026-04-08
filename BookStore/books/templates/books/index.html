@@ -1,0 +1,183 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Book Collection{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        align-items: stretch;
+        margin-bottom: 30px;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .book-card {
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+    }
+
+    .hero-copy {
+        padding: 34px;
+    }
+
+    .hero-copy h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        line-height: 1.05;
+    }
+
+    .hero-copy p {
+        margin: 0 0 24px;
+        color: var(--text-soft);
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .button-primary,
+    .button-secondary {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+
+    .button-primary {
+        background: var(--accent);
+        color: white;
+    }
+
+    .button-secondary {
+        background: rgba(154, 52, 18, 0.08);
+        color: var(--accent-dark);
+    }
+
+    .hero-card {
+        padding: 26px;
+        display: grid;
+        gap: 14px;
+        align-content: center;
+        background: linear-gradient(180deg, #fffdf9 0%, #fff1df 100%);
+    }
+
+    .hero-card strong {
+        font-size: 2.8rem;
+        color: var(--accent-dark);
+    }
+
+    .section-heading {
+        margin: 0 0 18px;
+        font-size: 1.5rem;
+    }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 22px;
+    }
+
+    .book-card {
+        overflow: hidden;
+    }
+
+    .book-card img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .book-card-body {
+        padding: 20px;
+    }
+
+    .book-card h2 {
+        margin: 0 0 10px;
+        font-size: 1.25rem;
+    }
+
+    .book-card p {
+        color: var(--text-soft);
+        line-height: 1.6;
+    }
+
+    .book-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 18px 0;
+        color: var(--text-soft);
+        font-size: 0.95rem;
+    }
+
+    .book-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 16px;
+        border-radius: 999px;
+        background: rgba(154, 52, 18, 0.1);
+        color: var(--accent-dark);
+        font-weight: 600;
+    }
+
+    @media (max-width: 760px) {
+        .hero {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p>Friendly picks for every kind of reader.</p>
+        <h1>Find your next favorite book in a warm, simple catalog.</h1>
+        <p>Browse a small collection of classics, enjoy cover previews, and open each title for a clearer look at the story, page count, and price.</p>
+        <div class="hero-actions">
+            <a class="button-primary" href="#book-list">Explore Books</a>
+            <a class="button-secondary" href="/">Back Home</a>
+        </div>
+    </div>
+    <aside class="hero-card">
+        <span>Collection snapshot</span>
+        <strong>{{ books|length }}</strong>
+        <p>Hand-picked titles with accessible details and a clean reading experience on desktop and mobile.</p>
+    </aside>
+</section>
+
+<section id="book-list">
+    <h2 class="section-heading">Featured Books</h2>
+    {% if books %}
+        <div class="books-grid">
+            {% for book in books %}
+                <article class="book-card">
+                    <img src="{% static 'books/images/' %}{{ book.image }}" alt="{{ book.title }}">
+                    <div class="book-card-body">
+                        <h2>{{ book.title }}</h2>
+                        <p>{{ book.breif }}</p>
+                        <div class="book-meta">
+                            <span>{{ book.noOfPages }} pages</span>
+                            <span>${{ book.price }}</span>
+                        </div>
+                        <a class="book-link" href="/books/{{ book.id }}/">Open book view</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No books are available right now.</p>
+    {% endif %}
+</section>
+{% endblock %}

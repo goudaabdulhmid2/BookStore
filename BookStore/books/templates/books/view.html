@@ -32,6 +32,16 @@
         display: block;
     }
 
+    .placeholder-cover {
+        min-height: 420px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #fff1df, #d97706);
+        color: white;
+        font-size: 5rem;
+        font-weight: 800;
+    }
+
     .book-summary {
         padding: 34px;
     }
@@ -99,6 +109,11 @@
         color: white;
     }
 
+    .danger-link {
+        background: rgba(127, 29, 29, 0.1);
+        color: #7f1d1d;
+    }
+
     @media (max-width: 760px) {
         .book-view {
             grid-template-columns: 1fr;
@@ -110,16 +125,20 @@
 {% block content %}
 <section class="book-view">
     <div class="book-panel">
-        <img src="{% static 'books/images/' %}{{ book.image }}" alt="{{ book.title }}">
+        {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.title }}">
+        {% else %}
+            <div class="placeholder-cover">{{ book.title|first }}</div>
+        {% endif %}
     </div>
     <article class="book-summary">
         <span class="eyebrow">Book View</span>
         <h1>{{ book.title }}</h1>
-        <p class="lead">{{ book.breif }}</p>
+        <p class="lead">{{ book.brief }}</p>
         <div class="stats">
             <div class="stat">
                 <span>Pages</span>
-                <strong>{{ book.noOfPages }}</strong>
+                <strong>{{ book.no_of_pages }}</strong>
             </div>
             <div class="stat">
                 <span>Price</span>
@@ -127,8 +146,9 @@
             </div>
         </div>
         <div class="actions">
-            <a class="back-link" href="/books/">Back to catalog</a>
-            <a class="browse-link" href="/books/index.html">Browse more books</a>
+            <a class="back-link" href="{% url 'books.index' %}">Back to catalog</a>
+            <a class="browse-link" href="{% url 'books.update' book.id %}">Edit book</a>
+            <a class="danger-link" href="{% url 'books.delete' book.id %}">Delete book</a>
         </div>
     </article>
 </section>

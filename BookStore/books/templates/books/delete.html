@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Delete {{ book.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .delete-card {
+        max-width: 680px;
+        margin: 0 auto;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 32px;
+    }
+
+    .delete-card h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    .delete-card p {
+        color: var(--text-soft);
+        line-height: 1.7;
+    }
+
+    .delete-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+
+    .delete-actions button,
+    .delete-actions a {
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .delete-actions button {
+        background: #7f1d1d;
+        color: white;
+    }
+
+    .delete-actions a {
+        background: rgba(154, 52, 18, 0.08);
+        color: var(--accent-dark);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="delete-card">
+    <h1>Delete {{ book.title }}?</h1>
+    <p>This will remove the book from the database. This action cannot be undone.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="delete-actions">
+            <button type="submit">Yes, delete it</button>
+            <a href="{% url 'books.show' book.id %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -130,6 +130,19 @@
         color: var(--accent-dark);
         font-weight: 600;
     }
+
+    .authors-inline {
+        margin: 0 0 12px;
+        color: var(--text-soft);
+        font-size: 0.94rem;
+        line-height: 1.6;
+    }
+
+    .authors-inline a {
+        color: var(--accent-dark);
+        text-decoration: underline;
+        text-decoration-color: rgba(154, 52, 18, 0.25);
+    }
     .no-image {
     height: 280px;
     display: grid;
@@ -157,6 +170,7 @@
         <div class="hero-actions">
             <a class="button-primary" href="#book-list">Explore Books</a>
             <a class="button-secondary" href="{% url 'books.create' %}">Create Book</a>
+            <a class="button-secondary" href="{% url 'authors.create' %}">Create Author</a>
         </div>
     </div>
     <aside class="hero-card">
@@ -183,6 +197,14 @@
                     <div class="book-card-body">
                         <h2>{{ book.title }}</h2>
                         <p>{{  book.brief }}</p>
+                        <p class="authors-inline">
+                            Authors:
+                            {% for author in book.authors.all %}
+                                <a href="{% url 'authors.show' author.id %}">{{ author.name }}</a>{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                No authors linked
+                            {% endfor %}
+                        </p>
                         <div class="book-meta">
                             <span>{{  book.no_of_pages }} pages</span>
                             <span>${{ book.price }}</span>

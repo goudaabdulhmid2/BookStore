@@ -105,7 +105,8 @@
     }
 
     .book-form input,
-    .book-form textarea {
+    .book-form textarea,
+    .book-form select {
         width: 100%;
         padding: 14px 16px;
         border: 1px solid var(--line);
@@ -120,8 +121,13 @@
         resize: vertical;
     }
 
+    .book-form select[multiple] {
+        min-height: 150px;
+    }
+
     .book-form input:focus,
-    .book-form textarea:focus {
+    .book-form textarea:focus,
+    .book-form select:focus {
         outline: none;
         border-color: rgba(154, 52, 18, 0.55);
         background: white;

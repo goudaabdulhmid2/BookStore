@@ -26,6 +26,7 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='books.index', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('books/',include('books.urls')),
+    path('api/', include('books.api.urls_api')),
     path('aboutus/',include('aboutus.urls')),
     path('authors/',include('authors.urls')),
     path('contactus/',include('contactus.urls')),

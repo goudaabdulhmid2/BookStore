@@ -123,6 +123,26 @@
         color: #fff8f5;
     }
 
+    .authors-block {
+        margin: 0 0 20px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 250, 243, 0.9);
+    }
+
+    .authors-block strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+
+    .authors-block a {
+        color: var(--accent-dark);
+        text-decoration: underline;
+        text-decoration-color: rgba(154, 52, 18, 0.3);
+    }
+
     .inline-form {
         margin: 0;
     }
@@ -148,6 +168,14 @@
         <span class="eyebrow">Book View</span>
         <h1>{{ book.title }}</h1>
         <p class="lead">{{ book.brief }}</p>
+        <div class="authors-block">
+            <strong>Authors</strong>
+            {% for author in book.authors.all %}
+                <a href="{% url 'authors.show' author.id %}">{{ author.name }}</a>{% if not forloop.last %}, {% endif %}
+            {% empty %}
+                <span>No authors linked yet. <a href="{% url 'authors.create' %}">Create author</a></span>
+            {% endfor %}
+        </div>
         <div class="stats">
             <div class="stat">
                 <span>Pages</span>

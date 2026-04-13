@@ -1,6 +1,4 @@
 {% extends "layouts/base.html" %}
-{% load static %}
-
 {% block title %}Our Authors{% endblock %}
 
 {% block extra_css %}
@@ -121,6 +119,30 @@
         font-size: 1.2rem;
     }
 
+    .author-meta {
+        margin: 10px 0;
+        color: var(--text-soft);
+        font-size: 0.95rem;
+    }
+
+    .author-link {
+        display: inline-flex;
+        margin-top: 12px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+        background: rgba(154, 52, 18, 0.1);
+        color: var(--accent-dark);
+    }
+
+    .no-records {
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px dashed var(--line);
+        color: var(--text-soft);
+        background: rgba(255, 255, 255, 0.65);
+    }
+
     .authors-story {
         background: rgba(255, 250, 243, 0.9);
     }
@@ -141,6 +163,7 @@
         <p>From timeless novelists to powerful literary voices, this page introduces the authors featured in our bookstore with the same calm, friendly experience used across the rest of the site.</p>
         <div class="authors-actions">
             <a class="button-primary" href="#authors-list">Explore authors</a>
+            <a class="button-primary" href="{% url 'authors.create' %}">Create author</a>
             <a class="button-secondary" href="/books/">See books</a>
         </div>
     </div>
@@ -153,17 +176,22 @@
 
 <section id="authors-list">
     <h2 class="section-title">Featured Authors</h2>
-    <div class="authors-grid">
-        {% for author in authors %}
-            <article class="author-card">
-                <img src="{% static 'authors/images/' %}{{ author.image }}" alt="{{ author.name }}">
-                <div class="author-body">
-                    <h2>{{ author.name }}</h2>
-                    <p>{{ author.bio }}</p>
-                </div>
-            </article>
-        {% endfor %}
-    </div>
+    {% if authors %}
+        <div class="authors-grid">
+            {% for author in authors %}
+                <article class="author-card">
+                    <div class="author-body">
+                        <h2>{{ author.name }}</h2>
+                        <p class="author-meta">{{ author.email }} · {{ author.get_gender_display }}</p>
+                        <p>{{ author.bio|truncatechars:150 }}</p>
+                        <a class="author-link" href="{% url 'authors.show' author.id %}">Open profile</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-records">No authors yet. <a href="{% url 'authors.create' %}">Create the first author</a>.</p>
+    {% endif %}
 </section>
 
 <section class="authors-story">

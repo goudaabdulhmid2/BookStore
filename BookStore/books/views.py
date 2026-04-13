@@ -15,12 +15,12 @@ books = [
 ]
 
 def index(request):
-    books = Book.objects.all()
+    books = Book.objects.prefetch_related("authors").all()
     print(type(books))
     return render(request, "books/index.html", context={"books": books})
 
 def show(request, id):
-    book = get_object_or_404(Book,id=id)
+    book = get_object_or_404(Book.objects.prefetch_related("authors"), id=id)
     return render(request, "books/view.html", context={"book": book})
 
 
@@ -38,6 +38,7 @@ def create(request):
             book.no_of_pages = form.cleaned_data["no_of_pages"]
             book.price = form.cleaned_data["price"]
             book.save()
+            book.authors.set(form.cleaned_data["authors"])
 
             return redirect("books.index")
     
@@ -52,6 +53,7 @@ def update(request, id):
         "brief":book.brief,
         "no_of_pages":book.no_of_pages,
         "price":book.price,
+        "authors": book.authors.all(),
     })
 
     if request.method == "POST":
@@ -67,6 +69,7 @@ def update(request, id):
                 book.image = form.cleaned_data["image"]
 
             book.save()
+            book.authors.set(form.cleaned_data["authors"])
 
             return redirect("books.show", id=book.id)
         

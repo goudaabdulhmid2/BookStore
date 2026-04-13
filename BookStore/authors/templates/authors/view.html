@@ -1,0 +1,186 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .author-view {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .author-card,
+    .author-summary {
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+    }
+
+    .author-card {
+        padding: 30px;
+    }
+
+    .author-summary {
+        padding: 34px;
+    }
+
+    .eyebrow {
+        color: var(--accent-dark);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.82rem;
+    }
+
+    .author-summary h1 {
+        margin: 10px 0 14px;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        line-height: 1.08;
+    }
+
+    .lead {
+        margin: 0 0 20px;
+        color: var(--text-soft);
+        font-size: 1.03rem;
+        line-height: 1.8;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .stat {
+        padding: 18px;
+        border-radius: 20px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+    }
+
+    .stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        margin: 0 0 12px;
+        font-size: 1.2rem;
+    }
+
+    .book-list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding-left: 18px;
+        color: var(--text-soft);
+    }
+
+    .book-list a {
+        color: var(--accent-dark);
+    }
+
+    .book-list a:hover {
+        text-decoration: underline;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-top: 24px;
+    }
+
+    .actions a,
+    .actions button {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 600;
+        border: 0;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .back-link {
+        background: rgba(154, 52, 18, 0.08);
+        color: var(--accent-dark);
+    }
+
+    .edit-link {
+        background: rgba(217, 119, 6, 0.15);
+        color: var(--accent-dark);
+    }
+
+    .delete-button {
+        background: #7f1d1d;
+        color: #fff8f5;
+    }
+
+    .create-link {
+        background: var(--accent);
+        color: white;
+    }
+
+    .inline-form {
+        margin: 0;
+    }
+
+    @media (max-width: 760px) {
+        .author-view {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="author-view">
+    <article class="author-card">
+        <span class="eyebrow">Author Profile</span>
+        <h2 class="section-title">Books authored</h2>
+
+        {% if author.books.all %}
+            <ul class="book-list">
+                {% for book in author.books.all %}
+                    <li><a href="{% url 'books.show' book.id %}">{{ book.title }}</a></li>
+                {% empty %}
+                    <li>This author is not linked to books yet.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </article>
+
+    <article class="author-summary">
+        <span class="eyebrow">Details</span>
+        <h1>{{ author.name }}</h1>
+        <p class="lead">{{ author.bio }}</p>
+
+        <div class="stats">
+            <div class="stat">
+                <span>Email</span>
+                <strong>{{ author.email }}</strong>
+            </div>
+            <div class="stat">
+                <span>Gender</span>
+                <strong>{{ author.get_gender_display }}</strong>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a class="back-link" href="{% url 'authors.index' %}">Back to authors</a>
+            <a class="edit-link" href="{% url 'authors.update' author.id %}">Edit author</a>
+            <form class="inline-form" method="post" action="{% url 'authors.delete' author.id %}" onsubmit="return confirm('Delete this author permanently?');">
+                {% csrf_token %}
+                <button class="delete-button" type="submit">Delete</button>
+            </form>
+            <a class="create-link" href="{% url 'authors.create' %}">Create author</a>
+        </div>
+    </article>
+</section>
+{% endblock %}

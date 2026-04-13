@@ -130,22 +130,15 @@
         color: var(--accent-dark);
         font-weight: 600;
     }
+    .no-image {
+    height: 280px;
+    display: grid;
+    place-items: center;
+    background: #fff1df;
+    color: var(--accent-dark);
+    font-weight: 700;
+        }
 
-    .book-actions {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-
-    .book-card .placeholder-cover {
-        height: 280px;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, #fff1df, #d97706);
-        color: white;
-        font-size: 3rem;
-        font-weight: 800;
-    }
 
     @media (max-width: 760px) {
         .hero {
@@ -163,7 +156,7 @@
         <p>Browse a small collection of classics, enjoy cover previews, and open each title for a clearer look at the story, page count, and price.</p>
         <div class="hero-actions">
             <a class="button-primary" href="#book-list">Explore Books</a>
-            <a class="button-secondary" href="{% url 'books.create' %}">Add New Book</a>
+            <a class="button-secondary" href="{% url 'books.create' %}">Create Book</a>
         </div>
     </div>
     <aside class="hero-card">
@@ -180,28 +173,27 @@
             {% for book in books %}
                 <article class="book-card">
                     {% if book.image %}
-                        <img src="{{ book.image.url }}" alt="{{ book.title }}">
+                         <img src="{{ book.image.url }}" alt="{{ book.title }}">
                     {% else %}
-                        <div class="placeholder-cover">{{ book.title|first }}</div>
+                        <div class="book-card-body">
+                             <p>No image uploaded</p>
+                        </div>
                     {% endif %}
+
                     <div class="book-card-body">
                         <h2>{{ book.title }}</h2>
-                        <p>{{ book.brief }}</p>
+                        <p>{{  book.brief }}</p>
                         <div class="book-meta">
-                            <span>{{ book.no_of_pages }} pages</span>
+                            <span>{{  book.no_of_pages }} pages</span>
                             <span>${{ book.price }}</span>
                         </div>
-                        <div class="book-actions">
-                            <a class="book-link" href="{% url 'books.show' book.id %}">Open</a>
-                            <a class="book-link" href="{% url 'books.update' book.id %}">Edit</a>
-                            <a class="book-link" href="{% url 'books.delete' book.id %}">Delete</a>
-                        </div>
+                        <a class="book-link" href="{% url 'books.show' book.id %}">Open book view</a>
                     </div>
                 </article>
             {% endfor %}
         </div>
     {% else %}
-        <p>No books are available right now. <a href="{% url 'books.create' %}">Create the first book</a>.</p>
+        <p>No books are available right now. <a href="{% url 'books.create' %}">Create your first book</a>.</p>
     {% endif %}
 </section>
 {% endblock %}

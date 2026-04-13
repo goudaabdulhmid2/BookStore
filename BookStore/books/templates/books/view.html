@@ -32,14 +32,13 @@
         display: block;
     }
 
-    .placeholder-cover {
+    .no-image {
         min-height: 420px;
         display: grid;
         place-items: center;
-        background: linear-gradient(135deg, #fff1df, #d97706);
-        color: white;
-        font-size: 5rem;
-        font-weight: 800;
+        background: #fff1df;
+        color: var(--accent-dark);
+        font-weight: 700;
     }
 
     .book-summary {
@@ -91,12 +90,17 @@
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
+        align-items: center;
     }
 
-    .actions a {
+    .actions a,
+    .actions button {
         padding: 12px 18px;
         border-radius: 999px;
         font-weight: 600;
+        border: 0;
+        font: inherit;
+        cursor: pointer;
     }
 
     .back-link {
@@ -109,9 +113,18 @@
         color: white;
     }
 
-    .danger-link {
-        background: rgba(127, 29, 29, 0.1);
-        color: #7f1d1d;
+    .edit-link {
+        background: rgba(217, 119, 6, 0.15);
+        color: var(--accent-dark);
+    }
+
+    .delete-button {
+        background: #7f1d1d;
+        color: #fff8f5;
+    }
+
+    .inline-form {
+        margin: 0;
     }
 
     @media (max-width: 760px) {
@@ -128,7 +141,7 @@
         {% if book.image %}
             <img src="{{ book.image.url }}" alt="{{ book.title }}">
         {% else %}
-            <div class="placeholder-cover">{{ book.title|first }}</div>
+            <div class="no-image">No image uploaded</div>
         {% endif %}
     </div>
     <article class="book-summary">
@@ -146,9 +159,13 @@
             </div>
         </div>
         <div class="actions">
-            <a class="back-link" href="{% url 'books.index' %}">Back to catalog</a>
-            <a class="browse-link" href="{% url 'books.update' book.id %}">Edit book</a>
-            <a class="danger-link" href="{% url 'books.delete' book.id %}">Delete book</a>
+            <a class="back-link" href="/books/">Back to catalog</a>
+            <a class="edit-link" href="{% url 'books.update' book.id %}">Edit this book</a>
+            <form class="inline-form" method="post" action="{% url 'books.delete' book.id %}" onsubmit="return confirm('Delete this book permanently?');">
+                {% csrf_token %}
+                <button class="delete-button" type="submit">Delete</button>
+            </form>
+            <a class="browse-link" href="{% url 'books.create' %}">Create another book</a>
         </div>
     </article>
 </section>

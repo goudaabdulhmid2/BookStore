@@ -104,21 +104,6 @@
             padding: 40px 0 56px;
         }
 
-        .messages {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 22px;
-        }
-
-        .message {
-            margin: 0;
-            padding: 14px 16px;
-            border-radius: 16px;
-            background: rgba(154, 52, 18, 0.08);
-            color: var(--accent-dark);
-            border: 1px solid rgba(154, 52, 18, 0.14);
-        }
-
         .site-footer {
             border-top: 1px solid rgba(154, 52, 18, 0.12);
             background: rgba(255, 250, 243, 0.92);
@@ -164,13 +149,6 @@
 <body>
     {% include "layouts/header.html" %}
     <main class="site-shell">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <p class="message message-{{ message.tags }}">{{ message }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
         {% block content %}{% endblock %}
     </main>
     {% include "layouts/footer.html" %}

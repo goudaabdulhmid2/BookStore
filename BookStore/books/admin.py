@@ -1,11 +1,6 @@
 from django.contrib import admin
-
 from .models import Book
 
+# Register your models here.
+admin.site.register(Book)
 
-@admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "price", "no_of_pages", "created_at", "updated_at")
-    list_filter = ("created_at", "updated_at")
-    search_fields = ("title", "brief")
-    readonly_fields = ("created_at", "updated_at")

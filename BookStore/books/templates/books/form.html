@@ -59,6 +59,12 @@
         color: #7f1d1d;
     }
 
+    .book-form p {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+    }
+
     .form-actions {
         display: flex;
         gap: 12px;
@@ -90,19 +96,11 @@
 {% block content %}
 <section class="form-shell">
     <h1>{{ page_title }}</h1>
-    <p>Use this plain Django form to save book data into MySQL. The form validates input first, then the model validates again before saving.</p>
+        <p>Use this plain Django form to save book data into MySQL. The form validates input first, then the model validates again before saving.</p>
 
     <form class="book-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.non_field_errors }}
-
-        {% for field in form %}
-            <div class="field">
-                {{ field.label_tag }}
-                {{ field }}
-                {{ field.errors }}
-            </div>
-        {% endfor %}
+        {{ form }}
 
         <div class="form-actions">
             <button type="submit">Save Book</button>

@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.shortcuts import reverse
 
 
 class Book(models.Model):
@@ -24,3 +25,14 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def show_url(self):
+        return reverse("books.show", args=[self.id])
+
+    @property
+    def image_url(self):
+        if self.image:
+            return self.image.url
+
+        return ""

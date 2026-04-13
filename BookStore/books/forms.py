@@ -4,11 +4,16 @@ from .models import Book
 
 
 class BookForm(forms.Form):
-    title = forms.CharField(max_length=200)
-    brief = forms.CharField(widget=forms.Textarea)
+    title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={"class": "form-control"}))
+    brief = forms.CharField(widget=forms.Textarea(attrs={"class": "form-control"}))
     image = forms.ImageField(required=False)
-    no_of_pages = forms.IntegerField(min_value=1)
-    price = forms.DecimalField(max_digits=8, decimal_places=2, min_value=0.01)
+    no_of_pages = forms.IntegerField(min_value=1, widget=forms.NumberInput(attrs={"class": "form-control"}))
+    price = forms.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        min_value=0.01,
+        widget=forms.NumberInput(attrs={"class": "form-control", "step": "0.01"}),
+    )
 
     def __init__(self, *args, instance=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -33,17 +38,3 @@ class BookForm(forms.Form):
             raise forms.ValidationError("Brief is required.")
 
         return brief
-
-    def save(self):
-        book = self.instance or Book()
-        book.title = self.cleaned_data["title"]
-        book.brief = self.cleaned_data["brief"]
-        book.no_of_pages = self.cleaned_data["no_of_pages"]
-        book.price = self.cleaned_data["price"]
-
-        if self.cleaned_data.get("image"):
-            book.image = self.cleaned_data["image"]
-
-        book.full_clean()
-        book.save()
-        return book
